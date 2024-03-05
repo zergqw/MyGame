@@ -1,36 +1,38 @@
  
-const createField = (line, сolumn) => {
-    const field = [[]]; 
-    for (i = 0; i < сolumn; i++) {
-        field[0].push(0)
+const whereMines = [] //Запоминание координат мин
+//Создание таблицы
+const createField = (line, сolumn, count) => {
+    const field = []; 
+    for (let Line = 0; Line < line; Line++){
+        field.push([])
+        for (let Column = 0; Column < сolumn; Column++) {
+            field[Line].push(0)
+        }
     }
-    for (i = 0; i < line-1; i++){
-        field.push(field[0])
+    for (i = 0; i < count; i++) {
+        const x = Math.floor(Math.random() * line)
+        const y = Math.floor(Math.random() * сolumn)
+        let check = 0;
+        for (const postion of whereMines) {
+            if (postion[0] === x && postion[1] === y) {
+                check = 1;
+            }
+        }
+        if (check === 0)  {
+            whereMines.push([x,y])
+            field[x][y] = ['M']
+        } else check = 0, i--; 
     }
     return field
 }
-const displayField1 = (field) => {
-    for (var i = 0; i < field.length; i++) {
-      var line = "";
-      for (var j = 0; j < field[i].length; j++) {
-        if (field[i][j] === -1) {
-          line += "* ";
-        } else {
-          line += field[i][j] + " ";
-        }
-      }
-      console.log(line);
-    }
-  }
-
+//Вывод поля
 const displayField = (field) => {
-    let a = ""
     for (const line of field) {
+        let a = ""
         for (const num of line){
             a += num + " "
         }
+        console.log(a)
     }
-    console.log(a)
   }
-
-displayField(createField(10,10))
+displayField(createField(4,4,5))
